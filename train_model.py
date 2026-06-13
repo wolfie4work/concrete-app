@@ -1,10 +1,24 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 import joblib
+import requests
+import io
+import xlrd
 
 print("Downloading dataset...")
 url = "https://archive.ics.uci.edu/ml/machine-learning-databases/concrete/compressive/Concrete_Data.xls"
-df = pd.read_excel(url)
+response = requests.get(url)
+
+workbook = xlrd.open_workbook(file_contents=response.content)
+sheet = workbook.sheet_by_index(0)
+
+data = []
+for row_idx in range(sheet.nrows):
+    row = sheet.row_values(row_idx)
+    data.append(row)
+
+df = pd.DataFrame(data[1:], columns=data[0])
+df = df.astype(float)
 
 df.columns = ["Ciment", "Laitier", "Cendres", "Eau", "Superplastifiant", 
               "Gros_Granulats", "Sable", "Age", "Resistance_MPa"]
