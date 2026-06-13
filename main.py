@@ -14,7 +14,7 @@ st.markdown("Application de *Machine Learning* pour estimer la résistance en co
 @st.cache_data
 def load_data():
     url = "https://archive.ics.uci.edu/ml/machine-learning-databases/concrete/compressive/Concrete_Data.xls"
-    df = pd.read_excel(url)
+    df = pd.read_excel(url, engine="xlrd")
     df.columns = ["Ciment", "Laitier", "Cendres", "Eau", "Superplastifiant",
                   "Gros_Granulats", "Sable", "Age", "Resistance_MPa"]
     return df
